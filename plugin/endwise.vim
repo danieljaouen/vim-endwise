@@ -128,7 +128,11 @@ function! s:mysearchpair(beginpat,endpat,synidpat)
   let s:lastline = line('.')
   call s:synid()
   let line = searchpair(a:beginpat,'',a:endpat,'Wn','<SID>synid() !~# "^'.substitute(a:synidpat,'\\','\\\\','g').'$"',line('.')+50)
-  return line
+  if match(getline(line), a:beginpat.".*end")
+    return 0
+  else
+    return line
+  endif
 endfunction
 
 function! s:crend(always)
